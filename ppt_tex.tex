@@ -1,0 +1,250 @@
+\documentclass[aspectratio=169]{beamer}
+
+% OPTION 1: Singapore theme with beaver color scheme
+% \usetheme{Singapore}
+% \usecolortheme{beaver}
+% \useinnertheme{circles}
+% \useoutertheme{miniframes}
+
+% Uncomment one of the other options below if you prefer
+
+% OPTION 2: Metropolis theme (modern, minimalist)
+% \usetheme{metropolis}
+% \setbeamercolor{background canvas}{bg=white}
+% \setbeamercolor{frametitle}{bg=gray!10}
+
+% OPTION 3: Frankfurt with spruce color scheme
+% \usetheme{Frankfurt}
+% \usecolortheme{spruce}
+% \useinnertheme{circles}
+
+% OPTION 4: Dresden with orchid color scheme
+% \usetheme{Madrid}
+% % \usecolortheme{beaver}
+% \useinnertheme{rectangles}
+% \useoutertheme{miniframes}
+
+% \documentclass{beamer}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{animate}
+\usetheme{Berkeley}
+\definecolor{mycolor}{RGB}{120, 130, 170} 
+\setbeamercolor{structure}{fg=mycolor}
+\setbeamercolor{background canvas}{bg=white!90} 
+\usepackage{tikz}
+\usetikzlibrary{trees}
+
+
+\usetikzlibrary{shapes, arrows}
+
+\tikzstyle{block} = [rectangle, draw, fill=white!20, text width=6em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse, fill=white!20, minimum height=2em]
+
+
+% \title{Statistical Estimation Methods}
+
+% \subtitle{A Brief Overview}
+% \institute{Department of Mathematics, IIT Roorkee}
+% \date{6 April 2023}
+% \author[]{Ved Umrajkar}
+
+\logo{\includegraphics[height=1cm]{iitr-logo.jpg}}
+
+
+% Required packages
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{tikz}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Code listings setup
+\lstset{
+  language=Python,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\color{blue},
+  commentstyle=\color{green!60!black},
+  stringstyle=\color{red},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=10pt,
+  backgroundcolor=\color{white},
+  tabsize=4,
+  showspaces=false,
+  showstringspaces=false,
+  frame=single,
+  breaklines=true,
+  breakatwhitespace=true,
+}
+
+% Title information
+\title[Discrete Logarithm Problem]{Hands-On Discrete Logarithm Problems}
+\subtitle{Algorithms and Cryptographic Applications}
+\author[]{Ved Umrajkar}
+\institute[]{Department of Mathematics\\Indian Institute of Technology, Roorkee}
+\date{\today}
+
+\begin{document}
+
+% Title slide
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Outline slide
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+% Start presentation content
+\section{Introduction to Discrete Logarithms}
+
+\begin{frame}{What is a Discrete Logarithm?}
+  \begin{block}{Definition}
+    In a finite group $G$, the \alert{discrete logarithm problem} is:
+    
+    Given elements $\alpha, \beta \in G$ with $\beta \in \langle\alpha\rangle$, find the least positive integer $x$ such that $\alpha^x = \beta$.
+  \end{block}
+  
+  \begin{itemize}
+    \item We denote this value $x$ as $\log_\alpha \beta$
+    \item In additive notation: find $x$ such that $x\alpha = \beta$
+    \item Multiplicative vs. additive notation (depending on group context)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Group Context Matters}
+  \begin{columns}
+    \begin{column}{0.48\textwidth}
+      \textbf{Example in $\mathbb{F}_{101}^{\times}$:}
+      \begin{itemize}
+        \item $\log_3 37 = 24$ (multiplicative)
+        \item Because $3^{24} \equiv 37 \pmod{101}$
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{Example in $\mathbb{F}_{101}^{+}$:}
+      \begin{itemize}
+        \item $\log_3 37 = 46$ (additive)
+        \item Because $46 \cdot 3 \equiv 37 \pmod{101}$
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \vspace{0.5cm}
+  \textbf{Key insight:} The difficulty depends on how the group is represented, not just its structure.
+\end{frame}
+
+\begin{frame}{Variants of the Discrete Logarithm Problem}
+  \begin{enumerate}
+    \item \textbf{Standard DLP:} Given $\alpha, \beta \in G$ with $\beta \in \langle\alpha\rangle$, find $x$ such that $\alpha^x = \beta$
+    
+    \item \textbf{Decision problem:} Given $\alpha, \beta \in G$, determine if $\beta \in \langle\alpha\rangle$
+    
+    \item \textbf{Extended DLP:} Given $\alpha, \beta \in G$, find the least positive integers $(x,y)$ such that $\beta^y = \alpha^x$
+    
+    \item \textbf{Vector DLP:} Given $\alpha_1, \ldots, \alpha_r \in G$ and $\beta \in G$, find $(e_1, \ldots, e_r)$ such that $\beta = \alpha_1^{e_1} \cdots \alpha_r^{e_r}$
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Why Discrete Logarithms Matter}
+  \begin{block}{Cryptographic Significance}
+    The discrete logarithm problem forms the foundation of many cryptographic protocols:
+  \end{block}
+  
+  \begin{itemize}
+    \item \textbf{Diffie-Hellman key exchange}
+    \item \textbf{ElGamal encryption system}
+    \item \textbf{Digital Signature Algorithm (DSA)}
+    \item \textbf{Elliptic Curve Cryptography (ECC)}
+  \end{itemize}
+  
+  \textbf{Security principle:} Easy in one direction (exponentiation), hard in the other (logarithm)
+\end{frame}
+
+\begin{frame}{Primitive Roots and Discrete Logarithms}
+  \begin{block}{Primitive Roots}
+    An element $u$ is a \alert{primitive root} modulo $m$ if the order of $u$ is $\phi(m)$.
+  \end{block}
+  
+  \begin{itemize}
+    \item If $u$ is a primitive root modulo $m$, then every unit modulo $m$ can be written as a power of $u$
+    \item Example: $2$ is a primitive root modulo $11$ since its powers generate all units $\{1,2,3,...,10\}$
+    \item Primitive roots exist modulo $p$ (prime) and for certain other moduli
+  \end{itemize}
+  
+  \begin{block}{Computing Discrete Logarithms}
+    For a primitive root $g$ modulo $p$, computing $\log_g a$ means finding the isomorphism between $\langle g \rangle$ and $\mathbb{Z}/p\mathbb{Z}$
+  \end{block}
+\end{frame}
+
+\begin{frame}{Computation: Easy vs. Hard Cases}
+  \begin{columns}
+    \begin{column}{0.48\textwidth}
+      \textbf{Easy cases:}
+      \begin{itemize}
+        \item Additive groups of finite fields
+        \item Groups with smooth order (factorizable with small primes)
+        \item Small groups (brute force)
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{Hard cases:}
+      \begin{itemize}
+        \item Multiplicative groups of finite fields with large prime factors
+        \item Elliptic curve groups over finite fields
+        \item Generic groups (black-box access only)
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  
+  \vspace{0.5cm}
+  \begin{block}{Computational Hardness}
+    The security of many cryptosystems relies on the computational intractability of the discrete logarithm problem in specific groups.
+  \end{block}
+\end{frame}
+
+\begin{frame}{A Simple Example}
+  Let's compute discrete logarithms in a small group:
+  
+  \begin{block}{Example: Finding all discrete logarithms base $2$ modulo $11$}
+    \begin{center}
+      \begin{tabular}{c|ccccccccc}
+        $n$ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+        \hline
+        $\log_2 n$ & 0 & 1 & 8 & 2 & 4 & 9 & 7 & 3 & 6 & 5 \\
+      \end{tabular}
+    \end{center}
+  \end{block}
+  
+  \begin{itemize}
+    \item Verify: $2^8 \equiv 3 \pmod{11}$, $2^9 \equiv 6 \pmod{11}$, etc.
+    \item With this table, multiplication becomes addition of logarithms!
+    \item $3 \cdot 6 \equiv 7 \pmod{11}$ and $\log_2(3) + \log_2(6) \equiv \log_2(7) \pmod{10}$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{A Computational Perspective}
+  \begin{block}{Computing Discrete Logarithms in Practice}
+    Several categories of algorithms:
+  \end{block}
+  
+  \begin{enumerate}
+    \item \textbf{Exhaustive search}: $O(N)$ where $N$ is the group order
+    \item \textbf{Baby-step Giant-step}: $O(\sqrt{N})$ time and space
+    \item \textbf{Pohlig-Hellman}: Reduces the problem for composite orders
+    \item \textbf{Pollard's $\rho$ method}: $O(\sqrt{N})$ time, $O(1)$ space
+    \item \textbf{Index Calculus}: Sub-exponential time for certain groups
+  \end{enumerate}
+  
+  \begin{alertblock}{Hard Problem vs. Trapdoor}
+    Unlike RSA, discrete logarithm-based systems typically don't have "trapdoors" that make computation easy for the legitimate user.
+  \end{alertblock}
+\end{frame}
+
+\end{document}
